@@ -1,5 +1,5 @@
 <?php
-namespace Application\Controller; 
+namespace Upvote\Application\Controller; 
 
 class User {
     
@@ -8,8 +8,8 @@ class User {
     public function __construct($config) {
         $dbconfig = $config['database'];
         $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
-        $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
-        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->db = new \PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
+        $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
     
     public function create() {
@@ -100,7 +100,7 @@ class User {
         $dsql = 'SELECT * FROM user WHERE username = ?';
         $stmt = $this->db->prepare($dsql);
         $stmt->execute(array($_SESSION['username']));
-        $details = $stmt->fetch(PDO::FETCH_ASSOC);
+        $details = $stmt->fetch(\PDO::FETCH_ASSOC);
         
         $content = '
         ' . $error . '<br />
@@ -129,7 +129,7 @@ class User {
             $stmt = $this->db->prepare($sql);
             $stmt->execute(array($username, $password));
             if($stmt->rowCount() > 0) {
-               $data = $stmt->fetch(PDO::FETCH_ASSOC); 
+               $data = $stmt->fetch(\PDO::FETCH_ASSOC); 
                session_regenerate_id();
                $_SESSION['username'] = $data['username'];
                $_SESSION['AUTHENTICATED'] = true;

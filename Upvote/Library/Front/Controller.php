@@ -1,5 +1,5 @@
 <?php
-namespace Library\Front;
+namespace Upvote\Library\Front;
 
 class Controller {
     
@@ -7,11 +7,10 @@ class Controller {
     
     public function __construct($config) {
         $this->_setupConfig($config);
-		set_include_path('/Users/marchampson/Sites/masterclass-repo/Upvote');
 		spl_autoload_register(array($this, 'autoload'));
     }
     
-	function autoload($className)
+	public function autoload($className)
 	{
 	    $className = ltrim($className, '\\');
 	    $fileName  = '';
@@ -22,8 +21,9 @@ class Controller {
 	        $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
 	    }
 	    $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-
-	    require $fileName;
+		if(stream_resolve_include_path($fileName)) {
+	    	require $fileName;
+		}
 	}
 
     public function execute() {
@@ -31,12 +31,14 @@ class Controller {
         $call_class = $call['call'];
         $class = ucfirst(array_shift($call_class));
         $method = array_shift($call_class);
+		$class = "Upvote\Application\Controller\\" . $class;
         $o = new $class($this->config);
         return $o->$method();
     }
     
     private function _determineControllers()
     {
+
         if (isset($_SERVER['REDIRECT_BASE'])) {
             $rb = $_SERVER['REDIRECT_BASE'];
         } else {
@@ -59,7 +61,7 @@ class Controller {
                 $return = array('call' => $controller_method);
             }
         }
-        
+
         return $return;
     }
     
