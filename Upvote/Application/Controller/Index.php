@@ -18,21 +18,14 @@ class Index {
     public function index() {
         
         $stories = $this->storyModel->fetchAll();
-        
-        $content = '<ol>';
-        
-        foreach($stories as $story) {
+
+		$storiesArray = array();
+		foreach($stories as $story) {
 			$comments = $this->commentModel->getComments($story['id']);
-            $content .= '
-                <li>
-                <a class="headline" href="' . $story['url'] . '">' . $story['headline'] . '</a><br />
-                <span class="details">' . $story['created_by'] . ' | <a href="/story/?id=' . $story['id'] . '">' . $comments['count'] . ' Comments</a> | 
-                ' . date('n/j/Y g:i a', strtotime($story['created_on'])) . '</span>
-                </li>
-            ';
-        }
-        
-        $content .= '</ol>';
+			$storiesArray[] = array('data' => $story, 'comments_count' => $comments['count']);
+		}
+
+		include(__DIR__ . '/../View/index/index.phtml');
         
         require 'layout.phtml';
     }
