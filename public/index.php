@@ -1,14 +1,11 @@
 <?php
 
 session_start();
+date_default_timezone_set('Europe/London');
 
 $config = require_once('../config.php');
-require_once '../MasterController.php';
+set_include_path(get_include_path() . ":" . realpath('..'));
+require_once 'Upvote/Library/Front/Controller.php';
 
-require_once '../Comment.php';
-require_once '../User.php';
-require_once '../Story.php';
-require_once '../Index.php';
-
-$framework = new MasterController($config);
+$framework = new Upvote\Library\Front\Controller($config);
 echo $framework->execute();

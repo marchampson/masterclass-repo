@@ -1,0 +1,15 @@
+<?php
+$content = '<ol>';
+
+foreach($storiesArray as $story) {
+
+    $content .= '
+        <li>
+        <a class="headline" href="' . $story['data']['url'] . '">' . $story['data']['headline'] . '</a><br />
+        <span class="details">' . $story['data']['created_by'] . ' | <a href="/story/?id=' . $story['data']['id'] . '">' . $story['comments_count'] . ' Comments</a> | 
+        ' . date('n/j/Y g:i a', strtotime($story['data']['created_on'])) . '</span>
+        </li>
+    ';
+}
+
+$content .= '</ol>';
