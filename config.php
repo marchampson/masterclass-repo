@@ -1,7 +1,5 @@
 <?php
-
 return array(
-
     'database' => array(
         'user' => 'root',
         'pass' => 'root',

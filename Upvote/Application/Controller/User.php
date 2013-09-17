@@ -48,18 +48,8 @@ class User {
                 exit;
             }
         }
-        // Show the create form
-        
-        $content = '
-            <form method="post">
-                ' . $error . '<br />
-                <label>Username</label> <input type="text" name="username" value="" /><br />
-                <label>Email</label> <input type="text" name="email" value="" /><br />
-                <label>Password</label> <input type="password" name="password" value="" /><br />
-                <label>Password Again</label> <input type="password" name="password_check" value="" /><br />
-                <input type="submit" name="create" value="Create User" />
-            </form>
-        ';
+
+		include(__DIR__ . '/../View/user/create.phtml');
         
         require_once 'layout.phtml';
         
@@ -73,11 +63,9 @@ class User {
         }
         
         if(isset($_POST['updatepw'])) {
-            if(!isset($_POST['password']) || !isset($_POST['password_check']) ||
-               $_POST['password'] != $_POST['password_check']) {
+            if($_POST['password'] == '' || $_POST['password_check'] == '' || $_POST['password'] != $_POST['password_check']) {
                 $error = 'The password fields were blank or they did not match. Please try again.';       
-            }
-            else {
+            } else {
 				$this->userModel->updatePassword($_POST['password'], $_SESSION['username']);
                 $error = 'Your password was changed.';
             }
@@ -85,18 +73,7 @@ class User {
         
 		$details = $this->userModel->getUser($_SESSION['username']);
         
-        $content = '
-        ' . $error . '<br />
-        
-        <label>Username:</label> ' . $details['username'] . '<br />
-        <label>Email:</label>' . $details['email'] . ' <br />
-        
-         <form method="post">
-                ' . $error . '<br />
-            <label>Password</label> <input type="password" name="password" value="" /><br />
-            <label>Password Again</label> <input type="password" name="password_check" value="" /><br />
-            <input type="submit" name="updatepw" value="Create User" />
-        </form>';
+        include(__DIR__ . '/../View/user/account.phtml');
         
         require_once 'layout.phtml';
     }
@@ -116,15 +93,8 @@ class User {
                 $error = 'Your username/password did not match.';
             }
         }
-        
-        $content = '
-            <form method="post">
-                ' . $error . '<br />
-                <label>Username</label> <input type="text" name="user" value="" />
-                <label>Password</label> <input type="password" name="pass" value="" />
-                <input type="submit" name="login" value="Log In" />
-            </form>
-        ';
+
+		include(__DIR__ . '/../View/user/login.phtml');
         
         require_once('layout.phtml');
         

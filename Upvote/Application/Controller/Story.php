@@ -31,31 +31,9 @@ class Story {
 		$comments = $this->commentModel->getComments($story['id']);
         $comment_count = $comments['count'];
         $comments = $comments['comments'];
+        
+		include(__DIR__ . '/../View/story/index.phtml');
 
-        $content = '
-            <a class="headline" href="' . $story['url'] . '">' . $story['headline'] . '</a><br />
-            <span class="details">' . $story['created_by'] . ' | ' . $comment_count . ' Comments | 
-            ' . date('n/j/Y g:i a', strtotime($story['created_on'])) . '</span>
-        ';
-        
-        if(isset($_SESSION['AUTHENTICATED'])) {
-            $content .= '
-            <form method="post" action="/comment/create">
-            <input type="hidden" name="story_id" value="' . $_GET['id'] . '" />
-            <textarea cols="60" rows="6" name="comment"></textarea><br />
-            <input type="submit" name="submit" value="Submit Comment" />
-            </form>            
-            ';
-        }
-        
-        foreach($comments as $comment) {
-            $content .= '
-                <div class="comment"><span class="comment_details">' . $comment['created_by'] . ' | ' .
-                date('n/j/Y g:i a', strtotime($story['created_on'])) . '</span>
-                ' . $comment['comment'] . '</div>
-            ';
-        }
-        
         require_once 'layout.phtml';
         
     }
@@ -67,6 +45,7 @@ class Story {
         }
         
         $error = '';
+
         if(isset($_POST['create'])) {
             if(!isset($_POST['headline']) || !isset($_POST['url']) ||
                !filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL)) {
@@ -78,15 +57,7 @@ class Story {
             }
         }
         
-        $content = '
-            <form method="post">
-                ' . $error . '<br />
-        
-                <label>Headline:</label> <input type="text" name="headline" value="" /> <br />
-                <label>URL:</label> <input type="text" name="url" value="" /><br />
-                <input type="submit" name="create" value="Create" />
-            </form>
-        ';
+        include(__DIR__ . '/../View/story/create.phtml');
         
         require_once 'layout.phtml';
     }

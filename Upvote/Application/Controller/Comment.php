@@ -24,5 +24,4 @@ class Comment {
 
         header("Location: /story/?id=" . $_POST['story_id']);
     }
-    
 }
